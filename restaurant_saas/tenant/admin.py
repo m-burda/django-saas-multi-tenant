@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_tenants.admin import TenantAdminMixin
 
-from .models import Domain, Client
+from .models import Domain, Tenant
 
 
 class DomainInline(admin.TabularInline):
@@ -9,6 +9,6 @@ class DomainInline(admin.TabularInline):
     max_num = 1
 
 
-@admin.register(Client)
+@admin.register(Tenant)
 class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
     inlines = [DomainInline]

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wk2vb*1xsl4og5^9tg-w2_)y90x70w#jjag@il7tnpt(p=ygc='
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,14 +34,17 @@ ALLOWED_HOSTS = []
 """
 SHARED_APPS = [
     'django_tenants',
-    'tenant',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tenant_users.permissions',
+    'tenant_users.tenants',
     'restaurant_saas',
+    'tenant',
+    'users',
 ]
 """
     These app's data are stored on their specific schemas
@@ -52,6 +56,7 @@ TENANT_APPS = [
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'tenant_users.permissions',
     'restaurant_saas',
 ]
 
@@ -96,8 +101,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'multitenant_restaurants',
-        'USER': 'postgres',
-        'PASSWORD': '16421307',
+        'USER': str(os.getenv('POSTGRES_USER')),
+        'PASSWORD': str(os.getenv('POSTGRES_PASS')),
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -107,8 +112,12 @@ DATABASE_ROUTERS = {
     'django_tenants.routers.TenantSyncRouter',
 }
 
-TENANT_MODEL = "tenant.Client" # app.Model
-TENANT_DOMAIN_MODEL = "tenant.Domain" # app.Model
+TENANT_USERS_DOMAIN = 'localhost'
+AUTHENTICATION_BACKENDS = ('tenant_users.permissions.backend.UserBackend',)
+AUTH_USER_MODEL = 'users.TenantUser'
+
+TENANT_MODEL = "tenant.Tenant"
+TENANT_DOMAIN_MODEL = "tenant.Domain"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
