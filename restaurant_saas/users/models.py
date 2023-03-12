@@ -9,3 +9,4 @@ _NameFieldLength = 64
 class TenantUser(UserProfile):
     name = models.CharField(max_length=_NameFieldLength, blank=True, )
     tenants = None
+

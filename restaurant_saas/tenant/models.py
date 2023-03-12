@@ -51,4 +51,6 @@ class Tenant(TenantBase):
 
 
 class Domain(DomainMixin):
-    pass
+    tenant_id = None
+    tenant = models.ForeignKey(settings.TENANT_MODEL, related_name='domains',
+                               on_delete=models.CASCADE, primary_key=True)
