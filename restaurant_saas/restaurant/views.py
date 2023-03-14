@@ -48,32 +48,42 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         except APIException:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @action(methods=['GET'], detail=True)
-    def menu(self, request, **kwargs):
-        # request.query_params
-        menus = MenuModel.objects.filter(restaurant_id=kwargs['owner_id'])
-        return Response({'menus': [MenuSerializer(menu).data for menu in menus]})
+    # @action(methods=['GET'], detail=True)
+    # def menu(self, **kwargs):
+    #     menus = MenuModel.objects.filter(restaurant_id=kwargs['owner_id'])
+    #     return Response({'menus': [MenuSerializer(menu).data for menu in menus]})
 
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = MenuModel.objects.all()
     serializer_class = MenuSerializer
+    # lookup_field = 'restaurant_id'
+
+    # def create(self, request, *args, **kwargs):
+    #     print(request.data)
+    #     restaurant_id = kwargs['restaurant_owner_id']
+    #     serializer = MenuSerializer(name=request.POST['name'], restaurant_id=restaurant_id)
+    #     if serializer.is_valid():
+    #         self.perform_create(serializer)
+    #         headers = self.get_success_headers(serializer.data)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def perform_create(self, serializer):
+    #     serializer
+    #     serializer.save()
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = CategoryModel.objects.all()
     serializer_class = CategorySerializer
 
+    # def create(self, request, *args, **kwargs):
+    #     print(kwargs)
+
 
 class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItemModel.objects.all()
     serializer_class = MenuItemSerializer
 
-    # @action(methods=['GET'], detail=True)
-    # def get_categories(self, request, menu_id=None):
-    #     # request.query_params
-    #     categories = CategoryModel.object.get(menu_id=menu_id)
-    #     return Response(categories.name)
 
-    # def create(self):
-    #     print(self.request.data)
+

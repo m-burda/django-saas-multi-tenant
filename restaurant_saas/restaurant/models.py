@@ -28,7 +28,7 @@ class CategoryModel(models.Model):
     menu = models.ForeignKey(MenuModel, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.menu} category: self.name'
+        return f'{self.menu} category: {self.name}'
 
 
 class MenuItemModel(models.Model):
@@ -37,4 +37,4 @@ class MenuItemModel(models.Model):
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.category}: self.name'
+        return f'{self.category}: {self.name}'

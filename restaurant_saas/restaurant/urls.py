@@ -5,20 +5,15 @@ from rest_framework_nested.routers import NestedDefaultRouter
 from .views import MenuViewSet, RestaurantViewSet, CategoryViewSet, MenuItemViewSet
 
 router = DefaultRouter()
-
-# router.register('menus', MenuViewSet)
 router.register('restaurants', RestaurantViewSet)
 
-# restaurant_router = NestedDefaultRouter(router, 'restaurants', lookup='owner_id')
-# restaurant_router.register('menus', MenuViewSet)
-
-menu_router = NestedDefaultRouter(router, 'restaurants', lookup='restaurant_id')
+menu_router = NestedDefaultRouter(router, 'restaurants', lookup='restaurant')
 menu_router.register('menus', MenuViewSet)
 
-category_router = NestedDefaultRouter(menu_router, 'menus', lookup='menu_id')
+category_router = NestedDefaultRouter(menu_router, 'menus', lookup='menu')
 category_router.register('categories', CategoryViewSet)
 
-item_router = NestedDefaultRouter(category_router, 'categories', lookup='category_id')
+item_router = NestedDefaultRouter(category_router, 'categories', lookup='category')
 item_router.register('items', MenuItemViewSet)
 
 urlpatterns = [

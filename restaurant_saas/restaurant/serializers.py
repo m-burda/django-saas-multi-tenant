@@ -6,26 +6,16 @@ from django_tenants.routers import TenantSyncRouter
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuModel
-        fields = [
-            'id',
-            'name',
-        ]
+        fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryModel
-        fields = [
-            'id',
-            'name',
-        ]
+        fields = '__all__'
 
 
 class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuItemModel
-        fields = [
-            'id',
-            'name',
-            'description',
-        ]
+        fields = '__all__'
