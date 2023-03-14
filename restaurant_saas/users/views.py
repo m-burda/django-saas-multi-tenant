@@ -1,7 +1,7 @@
-from rest_framework.generics import RetrieveAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveAPIView, ListAPIView, CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserRegistrationSerializer
 from .models import TenantUser
 
 
@@ -12,8 +12,16 @@ class RetrieveUserModelAPIView(RetrieveAPIView):
     # lookup_field = 'id'
 
 
-@permission_classes([IsAuthenticated])
 class UserListAPIView(ListAPIView):
     queryset = TenantUser.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
+
+
+class CreateUserAPIView(CreateAPIView):
+    permission_classes = [AllowAny]
+
+    queryset = TenantUser.objects.all()
+    serializer_class = UserRegistrationSerializer
+
+
