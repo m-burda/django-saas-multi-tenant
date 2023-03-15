@@ -1,14 +1,14 @@
 from django.db import IntegrityError
-from rest_framework import viewsets, generics, status, mixins
+from rest_framework import viewsets, status
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from tenant_users.tenants.tasks import provision_tenant
 from django_tenants.utils import schema_exists, schema_context
 
-from .models import MenuModel, CategoryModel, MenuItemModel
 from tenant.models import Tenant
 from users.models import TenantUser
 from tenant.serializers import TenantSerializer
+from .models import MenuModel, CategoryModel, MenuItemModel
 from .serializers import MenuSerializer, CategorySerializer, MenuItemSerializer
 
 
@@ -95,7 +95,8 @@ class MenuViewSet(BasicModelViewSet):
 
     def get_queryset(self):
         restaurant_id = self.kwargs.get("restaurant_owner_id")
-        return MenuModel.objects.filter(restaurant_id=restaurant_id)
+        if restaurant_id is not None:
+            return MenuModel.objects.filter(restaurant_id=restaurant_id)
 
 
 class CategoryViewSet(BasicModelViewSet):
@@ -103,11 +104,12 @@ class CategoryViewSet(BasicModelViewSet):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        menu_id = self.kwargs.get("menu_owner_id")
-        return CategoryModel.objects.filter(menu_id=menu_id)
+        menu_id = self.kwargs.get("menu_id")
+        if menu_id is not None:
+            return CategoryModel.objects.filter(menu_id=menu_id)
 
     def perform_create(self, serializer):
-        menu = self.kwargs.get("menu_owner_id")
+        menu = self.kwargs.get("menu_id")
         serializer.save(menu_id=menu)
 
 
