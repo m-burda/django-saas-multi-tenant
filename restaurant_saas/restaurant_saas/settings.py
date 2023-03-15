@@ -45,7 +45,6 @@ SHARED_APPS = [
     'users',
 ]
 
-
 TENANT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.auth',
@@ -59,7 +58,7 @@ TENANT_APPS = [
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS] \
                  + ['rest_framework.authtoken',
-                    'rest_framework',]
+                    'rest_framework', ]
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
@@ -77,23 +76,16 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
-
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-#     'AUTH_HEADER_TYPES': ('Bearer',),
-# }
 
 ROOT_URLCONF = 'restaurant_saas.urls'
 PUBLIC_SCHEMA_URLCONF = 'restaurant_saas.urls_public'
 
+SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 LOGIN_REDIRECT_URL = ''
 
 TEMPLATES = [

@@ -6,7 +6,7 @@ class TenantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tenant
         fields = [
-            'name',
-            'owner',
-            'slug',
+            "name",
+            "owner",
+            "slug",
         ]

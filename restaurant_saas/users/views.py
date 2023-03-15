@@ -12,7 +12,7 @@ class RetrieveUserModelAPIView(RetrieveAPIView):
 class UserListAPIView(ListAPIView):
     queryset = TenantUser.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'id'
+    lookup_field = "id"
 
 
 class CreateUserAPIView(CreateAPIView):
@@ -20,5 +20,3 @@ class CreateUserAPIView(CreateAPIView):
 
     queryset = TenantUser.objects.all()
     serializer_class = UserRegistrationSerializer
-
-
