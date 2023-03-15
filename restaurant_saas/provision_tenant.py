@@ -8,6 +8,7 @@ django.setup()
 from django.db.utils import IntegrityError
 from users.models import TenantUser
 from tenant_users.tenants.tasks import provision_tenant
+from django_tenants.utils import schema_exists, tenant_context
 
 
 def provision_tenant_custom(email, pwd):
@@ -30,7 +31,6 @@ def create_user(email, pwd):
     requests.post('http://localhost:8000/users/register/', json=data)
 
 
-# create_user('user@somecorp.com', '2222')
-# provision_tenant_custom('user@somecorp.com', '2222')
-provision_tenant(tenant_name="Provision Test Tenant", tenant_slug="provisiontnt2",
-                                user_email="user@goodcorp.com")
+create_user('user@goodcorp.com', '2222')
+# provision_tenant(tenant_name="Provision Test Tenant", tenant_slug="provisiontnt2",
+#                                 user_email="user@goodcorp.com")

@@ -29,9 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-"""
-    These app's data are stored on the public schema
-"""
+
 SHARED_APPS = [
     'django_tenants',
     'django.contrib.admin',
@@ -43,15 +41,12 @@ SHARED_APPS = [
     'tenant_users.permissions',
     'tenant_users.tenants',
     'restaurant_saas',
-    'restaurant',
     'tenant',
     'users',
 ]
-"""
-    These app's data are stored on their specific schemas
-"""
+
+
 TENANT_APPS = [
-    # The following Django contrib apps must be in TENANT_APPS
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.admin',
@@ -59,6 +54,7 @@ TENANT_APPS = [
     'django.contrib.messages',
     'tenant_users.permissions',
     'restaurant_saas',
+    'restaurant',
 ]
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS] \
@@ -96,6 +92,9 @@ REST_FRAMEWORK = {
 # }
 
 ROOT_URLCONF = 'restaurant_saas.urls'
+PUBLIC_SCHEMA_URLCONF = 'restaurant_saas.urls_public'
+
+LOGIN_REDIRECT_URL = ''
 
 TEMPLATES = [
     {
