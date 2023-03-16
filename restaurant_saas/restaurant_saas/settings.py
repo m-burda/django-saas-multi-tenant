@@ -43,6 +43,7 @@ SHARED_APPS = [
     'restaurant_saas',
     'tenant',
     'users',
+    'tenant_api',
 ]
 
 TENANT_APPS = [
@@ -58,7 +59,8 @@ TENANT_APPS = [
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS] \
                  + ['rest_framework.authtoken',
-                    'rest_framework', ]
+                    'rest_framework',
+                    ]
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
