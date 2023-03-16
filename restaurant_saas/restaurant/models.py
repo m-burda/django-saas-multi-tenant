@@ -12,7 +12,7 @@ class MenuModel(models.Model):
 
 class CategoryModel(models.Model):
     name = models.CharField(max_length=20)
-    menu = models.ForeignKey(MenuModel, on_delete=models.CASCADE)
+    menu = models.ForeignKey(MenuModel, on_delete=models.CASCADE, related_name='category_set')
 
     def __str__(self):
         return f"{self.menu} category: {self.name}"
@@ -21,7 +21,7 @@ class CategoryModel(models.Model):
 class MenuItemModel(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=200)
-    category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE)
+    category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, related_name='item_set')
 
     def __str__(self):
         return f"{self.category}: {self.name}"
