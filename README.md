@@ -21,7 +21,10 @@ Public API offers the following:
 - CRUD Category
 - CRUD product
 
-With Tenant API currently you can retrieve tenant specific menu details.
+With Tenant API your can:
+- retrieve Menu (With categories)
+- retrieve Category (With items)
+- retrieve Item 
 
 ###### API examples
 
@@ -39,7 +42,10 @@ To list users and view user instances, you can use the following links:
 
 You can list any instances provided above by not including their id in the URL.
 
-To view a menu instance on a subdomain, visit `tenant_slug.yourdomain/api/menus/<menu_id>`
+To retrieve object details on a subdomain, visit <br>
+`tenant_slug.yourdomain/api/menus/<menu_id>` <br>
+`tenant_slug.yourdomain/api/categories/<category_id>`<br>
+`tenant_slug.yourdomain/api/items/<item_id>`
 
 Notice that the following URL is not present in the public domain.
 
