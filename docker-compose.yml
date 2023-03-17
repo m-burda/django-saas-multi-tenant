@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15.2-alpine
+    container_name: django_tenants_db
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=16421307
+      - POSTGRES_DB=multitenant_restaurants
+      - DATABASE_PORT=5432
+    ports:
+      - "5433:5432"
+    expose:
+      - "5432"
+#  pgadmin:
+#    container_name: django_tenants_pgadmin_container
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#    volumes:
+#      - ./pgadmin:/root/.pgadmin
+#    ports:
+#      - "${PGADMIN_PORT:-5050}:80"
+#    restart: unless-stopped
+  web:
+    build: .
+    image: django-webapp:0.0.1
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+#    command: gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
+    container_name: django_multi_tenant
+#    volumes:
+#      - .:/django
+#    expose:
+#      - "8000"
+    ports:
+      - "8000:8000"
