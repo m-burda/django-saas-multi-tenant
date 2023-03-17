@@ -16,21 +16,11 @@ class Tenant(TenantBase):
         primary_key=True,
     )
 
-    auto_drop_schema = True
+    auto_drop_schema = False
 
-    def drop_schema(self, force_drop=False):
-        self._drop_schema(force_drop)
-
-    def delete(self, *args, **kwargs):
-        super(TenantMixin, self).delete(*args, **kwargs)
-
-    def delete_and_drop_schema(self, force_drop=False, *args, **kwargs):
-        """
-        Deletes this row. Drops the tenant's schema if the attribute
-        auto_drop_schema set to True.
-        """
-        self.drop_schema(force_drop)
-        self.delete(self, *args, **kwargs)
+    def delete(self, force_drop=False, *args, **kwargs):
+        super(TenantMixin, self).delete(force_drop, *args, **kwargs)
+        super()._drop_schema(force_drop=True)
 
     @schema_required
     def add_user(self, user_obj, is_superuser=False, is_staff=False):
