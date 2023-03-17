@@ -64,10 +64,4 @@ There, specify the following variables (or hardcode them into the project if you
 Before populating the database, run [this](restaurant_saas/create_public_tenant.py) script first.
 
 User creation and tenant provisioning (restaurant) can both be done using the public API. You can do so via your browser
-as well, thanks to DRF.
-
-## Known issues
-
-Curently, you can't delete tenant (restaurants) through the public API. This is because Django tries to also drop every
-object in database that is related to the restaurant (those reside in a different schema than our restaurant).
-
+as well (thanks DRF)

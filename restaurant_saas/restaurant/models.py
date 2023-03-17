@@ -3,7 +3,7 @@ from tenant.models import Tenant
 
 
 class MenuModel(models.Model):
-    restaurant = models.ForeignKey(Tenant, on_delete=models.PROTECT)
+    restaurant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     name = models.CharField(max_length=20, blank=True, default=f"{restaurant} Menu")
 
     def __str__(self):

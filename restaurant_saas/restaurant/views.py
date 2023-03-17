@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from rest_framework import viewsets, status
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
+from django_tenants.models import TenantMixin
 from tenant_users.tenants.tasks import provision_tenant
 from django_tenants.utils import schema_exists, schema_context
 
@@ -82,7 +83,10 @@ class RestaurantViewSet(viewsets.ModelViewSet):
         try:
             tenant_for_deletion = Tenant.objects.get(owner_id=kwargs["owner_id"])
             if tenant_for_deletion:
-                Tenant.delete(tenant_for_deletion)
+                schema_name = get_schema_from_tenant(Tenant, self.kwargs["owner_id"])
+                if schema_exists(schema_name):
+                    with schema_context(schema_name):
+                        Tenant.delete(tenant_for_deletion)
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(status=status.HTTP_404_NOT_FOUND)
         except APIException:
