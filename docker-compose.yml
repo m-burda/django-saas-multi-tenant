@@ -17,11 +17,21 @@ services:
     expose:
       - "5432"
 
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./restaurant_saas/staticfiles:/home/app/staticfiles
+
   local:
     build: .
     image: django-webapp:0.0.1
     depends_on:
       - postgres
+      - nginx
     env_file:
       - .env
     environment:
@@ -32,13 +42,11 @@ services:
       - -c
       - |
         while ! nc -q 1 postgres 5432 </dev/null; do sleep 5; done
-        python3 manage.py migrate
-        python3 create_public_tenant.py
-        gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+        chmod u+rx setup_django.sh
+        ./setup_django.sh
     container_name: django_multi_tenant
-    volumes:
-      - .:/django
     expose:
       - "8000"
-    ports:
-      - "8000:8000"
+
+volumes:
+  staticfiles:
