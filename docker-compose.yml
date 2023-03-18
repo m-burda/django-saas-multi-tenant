@@ -1,0 +1,67 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15.2-alpine
+    container_name: django_tenants_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_PORT=${DB_PORT}
+    ports:
+      - "5433:5432"
+#    expose:
+#      - "5432"
+
+  web:
+    build: ../docker_django
+    image: django-webapp:0.0.1
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+#    command: gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+    command:
+      - /bin/sh
+      - -c
+      - |
+        python3 manage.py migrate
+        python3 create_public_tenant.py
+        gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+    container_name: django_multi_tenant
+#    volumes:
+#      - .:/django
+#    expose:
+#      - "8000"
+    ports:
+      - "8000:8000"
+
+  local:
+    build: ../docker_django
+    image: django-webapp:0.0.1
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+#    command: gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+    command:
+      - /bin/sh
+      - -c
+      - |
+        python3 manage.py migrate
+        python3 create_public_tenant.py
+        gunicorn restaurant_saas.wsgi:application --bind 0.0.0.0:8000
+    container_name: django_multi_tenant
+#    volumes:
+#      - .:/django
+#    expose:
+#      - "8000"
+    ports:
+      - "8000:8000"
