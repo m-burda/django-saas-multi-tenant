@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-from datetime import timedelta
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = str(os.getenv('SECRET_KEY'))
+SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.getenv('DEBUG', False))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
@@ -87,7 +87,7 @@ REST_FRAMEWORK = {
 ROOT_URLCONF = 'restaurant_saas.urls'
 PUBLIC_SCHEMA_URLCONF = 'restaurant_saas.urls_public'
 
-SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
+SHOW_PUBLIC_IF_NO_TENANT_FOUND = False
 LOGIN_REDIRECT_URL = ''
 
 TEMPLATES = [
@@ -117,8 +117,8 @@ DATABASES = {
         'NAME': 'multitenant_restaurants',
         'USER': str(os.getenv('POSTGRES_USER')),
         'PASSWORD': str(os.getenv('POSTGRES_PASS')),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': str(os.getenv('DB_HOST')),
+        'PORT': int(os.getenv('DB_PORT')),
     }
 }
 
@@ -165,7 +165,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
