@@ -232,5 +232,5 @@ fabric.properties
 
 postgres-data/
 pgadmin/
-.env
 .DS_Store
+./restaurant_saas/staticfiles

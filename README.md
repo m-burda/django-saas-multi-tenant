@@ -49,7 +49,7 @@ To retrieve object details on a subdomain, visit <br>
 
 Notice that the following URL is not present in the public domain.
 
-## Project specific setup
+## Local project setup
 
 This project uses `python-dotenv` to hide sensitive data. Thus, you have to create a `.env` file in the project's
 root directory.
@@ -58,10 +58,22 @@ There, specify the following variables (or hardcode them into the project if you
 - `SECRET_KEY` - Django secret key
 - `POSTGRES_USER`
 - `POSTGRES_PASS`
-- `PUBLIC_TENANT_EMAIL` - this is the email for our public tenant
-- `PUBLIC_TENANT_DOMAIN` - your domain (`"localhost"` if running locally)
+- `POSTGRES_DB` - Database name
+- `DB_HOST`
+- `DB_PORT`
+- `PUBLIC_TENANT_EMAIL` - This is the email for our public tenant
+- `PUBLIC_TENANT_DOMAIN` - Your domain (`"localhost"`)
+- `ALLOWED_HOSTS"`
+- `DEBUG=1`
 
+Don't forget to `python manage.py makemigrations` and `python manage.py migrate`
 Before populating the database, run [this](restaurant_saas/create_public_tenant.py) script first.
 
 User creation and tenant provisioning (restaurant) can both be done using the public API. You can do so via your browser
 as well (thanks DRF)
+
+## Running locally with Docker Compose
+
+Set up environment variables as described above, plus `DB_HOST=postgres` 
+
+`docker-compose up`
